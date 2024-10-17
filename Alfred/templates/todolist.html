@@ -1,0 +1,28 @@
+{% extends "base.html"%}
+{% block title %}Works That Need to be Finished{% endblock %}
+{% block content%}
+<form method="POST">
+<h3 align="center">Lists</h3>
+
+<div class="form-group">
+    <label for="Tasks">Tasks</label>
+    <input 
+    type="text" 
+    class="form-control" 
+    id="Tasks" 
+    name="Tasks" 
+    placeholder="What is on your mind">
+<div class="form-group">
+        <label for="description">description</label>
+        <input 
+        type="text" 
+        class="form-control" 
+        id="description" 
+        name="description" 
+        placeholder="description">
+    </div>
+</div>
+<br>
+<button type="submit" class="btn btn-primary">submit</button>
+</form>
+{% endblock %}
