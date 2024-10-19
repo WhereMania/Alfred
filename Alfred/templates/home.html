@@ -1,5 +1,54 @@
 {% extends "base.html"%}
 {% block title %}Home{% endblock %}
 {% block content%}
-<h1> This is the home page</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="static/imgs/Alfred.png">
+    <title>Alfred</title>
+</head>
+
+<link rel="stylesheet" href="static/style.css">
+
+<body style="background-color: rgb(112, 194, 194);">
+        </header>
+            <img src="{{ url_for('static', filename='imgs/Alfred.png') }}" height="100" alt="" >
+        </header>
+        <main>  
+            <h2 align="center"><b>Alfred At your service</b></h2>
+<div align="center">
+    
+    <a href="{{ url_for('fetures.add_task') }}" title="Tasks">
+        <img src="{{ url_for('static', filename='imgs/tasks.jpg') }}"height="50"  alt="Tasks">
+       </a>
+    <a href="moneymanage.html" title="moneymanager">
+        <img src="{{ url_for('static', filename='imgs/money.jpg') }}" height="50" alt="money">
+       </a>
+    <a href="{{ url_for('fetures.lyrics') }}" title="music">
+    <img src="{{ url_for('static', filename='imgs/music.jpg') }}" height="50" alt="image">
+       </a>
+   <a href="{{url_for('fetures.cooking')}}" title="cooking">
+    <img src="{{ url_for('static', filename='imgs/cooking.webp') }}" height="50" alt="cooking">
+   </a>
+   <a href="newspaper.html" title="news">
+    <img src="{{ url_for('static', filename='imgs/news.png') }}" height="50" alt="news">
+   </a>
+   <a href="emailto:Tahaoctave@gmail.com" title="email">
+    <img src="{{ url_for('static', filename='imgs/email.jpg') }}" height="50" alt="emailme">
+   </a>
+</div>
+    </main> 
+
+    <footer>
+        <hr >
+        author: Taha-EFazati <br>
+        &copy; Copyright Reserved <br>
+        <small><a href="mailto:Taha.efa@gmail.com">Taha.efa@gmail.com</a></small>
+
+    </footer>
+
+</body>
+</html>
 {% endblock %}
