@@ -1,0 +1,43 @@
+{% extends "base.html"%}
+{% block title %}cooking{% endblock %}
+{% block content%}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kitchen</title>
+</head>
+<body>
+
+    <form action="POST"></form>
+    <label for="food">food</label>
+    <input type="text" id="food" name="food" placeholder="What you looking for?">
+    <button type="submit">Submit</button>
+
+   <h1>
+    What u want to eat today?
+   </h1> 
+
+   <h4>Pizza</h4>
+   <img src="{{url_for('static',filename='imgs/napoli.webp')}}" height="150" alt="">
+   <ul>Napoli pizza</ul>
+   <li>wheat</li>
+   <li>tomato sauce</li>
+   <li>mozzarella</li>
+   <li>basil leaves</li>
+   <li>Olvie oil</li>
+   <li>water</li>
+   <li>yeast</li>
+   <img src="{{url_for('static',filename='imgs/peperoni.webp')}}"  height="150" alt="">
+   <ul>Peperoni Pizza</ul>
+   <li>wheat</li>
+   <li>yeast</li>
+   <li>water</li>
+   <li>tomato sauce</li>
+   <li>mozzarella</li>
+   <li>Peperoni</li>
+</body>
+</html>
+{% endblock %}
