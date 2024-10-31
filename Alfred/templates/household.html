@@ -1,0 +1,149 @@
+{% extends "base.html" %} {% block title %}Tasks{% endblock %} {% block content
+%}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Household Management</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+  </head>
+  <body>
+    <div class="container mt-5">
+      <!-- Create Household Form -->
+      <h3>Create New Household</h3>
+      <form method="POST" action="{{ url_for('household.manage_household') }}">
+        <input
+          type="text"
+          name="household_name"
+          placeholder="Household Name"
+          required
+          class="form-control mb-2"
+        />
+        <button type="submit" class="btn btn-primary">Create Household</button>
+      </form>
+
+      <!-- Flash Messages -->
+      {% with messages = get_flashed_messages(with_categories=true) %} {% if
+      messages %}
+      <div class="alert alert-dismissible fade show mt-3" role="alert">
+        {% for category, message in messages %}
+        <div class="alert alert-{{ category }}">{{ message }}</div>
+        {% endfor %}
+      </div>
+      {% endif %} {% endwith %}
+
+      <!-- Existing Households Section -->
+      <h5 class="mt-4">Existing Households</h5>
+      <ul class="list-group">
+        {% for household in households %}
+        <li class="list-group-item">
+          <strong>{{ household[1] }}</strong>
+          <h6>Members:</h6>
+          <ul>
+            {% for member in household_members[household[0]] %}
+            <li>
+              {{ member[1] }} (ID: {{ member[0] }})
+              <form
+                method="POST"
+                action="{{ url_for('household.remove_member', household_id=household[0], user_id=member[0]) }}"
+                style="display: inline"
+              >
+                <button type="submit" class="btn btn-danger btn-sm">
+                  Remove Member
+                </button>
+              </form>
+
+              <!-- Display assigned tasks for this member -->
+              <h6>Assigned Tasks:</h6>
+              <ul>
+                {% for task in household_tasks[household[0]] %} {% if
+                task.assigned_user_id == member[0] %}
+                <li>
+                  {{ task.task_description }} (Status: {{ task.status }},
+                  Assigned on: {{ task.created_at.strftime('%Y-%m-%d') }})
+                  <form
+                    method="POST"
+                    action="{{ url_for('household.delete_task', task_id=task.id) }}"
+                    style="display: inline"
+                  >
+                    <button type="submit" class="btn btn-danger btn-sm">
+                      Remove Assignment
+                    </button>
+                  </form>
+                </li>
+                {% endif %} {% endfor %}
+              </ul>
+            </li>
+            {% endfor %}
+          </ul>
+
+          <!-- Add Member Form -->
+          <form
+            method="POST"
+            action="{{ url_for('household.add_member', household_id=household[0]) }}"
+            style="display: inline"
+          >
+            <input
+              type="text"
+              name="user_id"
+              placeholder="User ID"
+              required
+              class="form-control mb-2"
+            />
+            <button type="submit" class="btn btn-success btn-sm">
+              Add Member
+            </button>
+          </form>
+          <!-- Assign Task Form -->
+          <form
+            method="POST"
+            action="{{ url_for('household.assign_task') }}"
+            style="display: inline"
+          >
+            <input
+              type="hidden"
+              name="household_id"
+              value="{{ household[0] }}"
+            />
+            <input
+              type="text"
+              name="task_description"
+              placeholder="Task"
+              required
+              class="form-control mb-2"
+            />
+            <select name="assigned_user_id" required class="form-control mb-2">
+              {% for user in household_members[household[0]] %}
+              <option value="{{ user[0] }}">{{ user[1] }}</option>
+              {% endfor %}
+            </select>
+            <button type="submit" class="btn btn-warning btn-sm">
+              Assign Task
+            </button>
+          </form>
+
+          <!-- Delete Household Form -->
+          <form
+            method="POST"
+            action="{{ url_for('household.delete_household', household_id=household[0]) }}"
+            style="display: inline"
+          >
+            <button type="submit" class="btn btn-danger btn-sm">
+              Delete Household
+            </button>
+          </form>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  </body>
+</html>
+{% endblock %}

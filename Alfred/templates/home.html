@@ -10,17 +10,16 @@
     <title>Alfred</title>
 </head>
 
-<link rel="stylesheet" href="static/style.css">
 
-<body style="background-color: rgb(112, 194, 194);">
+<body class="text-center" style="background-color: rgb(112, 194, 194);">
         </header>
             <img src="{{ url_for('static', filename='imgs/Alfred.png') }}" height="100" alt="" >
         </header>
         <main>  
-            <h2 align="center"><b>Alfred At your service</b></h2>
+            <h2 align="center"><b>Alfred At your service</b></h2> <br>
 <div align="center">
     
-    <a href="{{ url_for('fetures.add_task') }}" title="Tasks">
+    <a href="{{ url_for('fetures.task') }}" title="Tasks">
         <img src="{{ url_for('static', filename='imgs/tasks.jpg') }}"height="50"  alt="Tasks">
        </a>
     <a href="moneymanage.html" title="moneymanager">
@@ -38,10 +37,14 @@
    <a href="emailto:Tahaoctave@gmail.com" title="email">
     <img src="{{ url_for('static', filename='imgs/email.jpg') }}" height="50" alt="emailme">
    </a>
+   <a href="{{url_for('household.manage_household')}}" title="TeamManagement">
+    <img src="{{url_for('static', filename='imgs/team.png')}}" height="60"  alt="TeamManagement">
+   </a>
 </div>
+
     </main> 
 
-    <footer>
+    <footer style="text-align: center; margin-top: 550px;">
         <hr >
         author: Taha-EFazati <br>
         &copy; Copyright Reserved <br>
