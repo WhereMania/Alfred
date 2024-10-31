@@ -12,10 +12,12 @@ def create_app():
     from .views import views
     from .auth import auth
     from .fetures import fetures
+    from .household import household
 
     app.register_blueprint(views,url_prefix='/')
     app.register_blueprint(auth, url_prefix='/')
     app.register_blueprint(fetures, url_prefix='/')
+    app.register_blueprint(household, url_prefix='/')
     
     return app
 

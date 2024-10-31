@@ -1,43 +1,66 @@
-{% extends "base.html"%}
-{% block title %}cooking{% endblock %}
-{% block content%}
+{% extends "base.html"%} {% block title %}cooking{% endblock %} {% block
+content%}
 
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kitchen</title>
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cooking Recipes</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='styles.css') }}"
+    />
+  </head>
+  <body>
+    <h1>Cooking Recipes</h1>
 
-    <form action="POST"></form>
-    <label for="food">food</label>
-    <input type="text" id="food" name="food" placeholder="What you looking for?">
-    <button type="submit">Submit</button>
+    <!-- Flash messages -->
+    {% with messages = get_flashed_messages() %} {% if messages %}
+    <ul class="flash-messages">
+      {% for message in messages %}
+      <li>{{ message }}</li>
+      {% endfor %}
+    </ul>
+    {% endif %} {% endwith %}
 
-   <h1>
-    What u want to eat today?
-   </h1> 
+    <form action="{{ url_for('fetures.cooking') }}" method="POST">
+      <label for="food_name">Food Name:</label>
+      <input type="text" id="food_name" name="food_name" required /><br /><br />
 
-   <h4>Pizza</h4>
-   <img src="{{url_for('static',filename='imgs/napoli.webp')}}" height="150" alt="">
-   <ul>Napoli pizza</ul>
-   <li>wheat</li>
-   <li>tomato sauce</li>
-   <li>mozzarella</li>
-   <li>basil leaves</li>
-   <li>Olvie oil</li>
-   <li>water</li>
-   <li>yeast</li>
-   <img src="{{url_for('static',filename='imgs/peperoni.webp')}}"  height="150" alt="">
-   <ul>Peperoni Pizza</ul>
-   <li>wheat</li>
-   <li>yeast</li>
-   <li>water</li>
-   <li>tomato sauce</li>
-   <li>mozzarella</li>
-   <li>Peperoni</li>
-</body>
+      <label for="recipe">Recipe:</label>
+      <textarea id="recipe" name="recipe" required></textarea><br /><br />
+
+      <button type="submit">Add Recipe</button>
+    </form>
+
+    <h2>Recipe List</h2>
+    <table>
+      <tr>
+        <th>Food Name</th>
+
+        <th>Recipe</th>
+
+        <th>Actions</th>
+      </tr>
+      {% for item in recipes %}
+      <tr>
+        <td>{{ item[1] }}</td>
+        <td>{{ item[2] }}</td>
+
+        <td>
+          <form
+            action="{{ url_for('fetures.delete_cooking', food_id=item[0]) }}"
+            method="POST"
+            style="display: inline"
+          >
+            <button type="submit">Delete</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </table>
+  </body>
 </html>
+
 {% endblock %}

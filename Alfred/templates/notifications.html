@@ -1,0 +1,12 @@
+<h2>Notifications</h2>
+<ul>
+  {% for notification in notifications %}
+  <li>
+    {{ notification[2] }}
+    <!-- Notification message -->
+    {% if not notification[3] %}
+    <span class="badge badge-info">Unread</span>
+    {% endif %}
+  </li>
+  {% endfor %}
+</ul>
