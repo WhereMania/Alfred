@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect, url_for, flash
+from flask import Blueprint, render_template, request, redirect, url_for, flash , session
 import mysql.connector
 from flask_socketio import emit
 from datetime import datetime
@@ -141,13 +141,43 @@ def task():
 
     return render_template('todolist.html', tasks=task_list)
 
-# You may also want to add a route for fetching notifications
+# You may also want to add a route for fetching notifications@household.route('/notifications', methods=['GET'])
 @household.route('/notifications', methods=['GET'])
 def notifications():
-    user_id = ...  # Get the current user's ID from session or context
-    cursor.execute('SELECT * FROM notifications WHERE user_id = %s', (user_id,))
+    # Retrieve user_id from the session
+    user_id = session.get('user_id')
+
+    # Check if user_id is present
+    if user_id is None:
+        flash("You must be logged in to view notifications.", category='error')
+        return redirect(url_for('auth.login'))  # Redirect to login if not logged in
+
+    # Fetch user notifications with task details
+    cursor.execute('''
+        SELECT notifications.id AS notification_id,
+               notifications.message AS notification_message,
+               tasks.task_description AS task_description,
+               tasks.household_id AS household_id,
+               notifications.is_read AS is_read
+        FROM notifications
+        JOIN tasks ON notifications.task_id = tasks.id
+        WHERE notifications.user_id = %s
+    ''', (user_id,))
     user_notifications = cursor.fetchall()
+
     return render_template('notifications.html', notifications=user_notifications)
+
+@household.route('/mark_notification_read/<int:notification_id>', methods=['POST'])
+def mark_notification_read(notification_id):
+    # Update the notification to set is_read to true
+    cursor.execute(
+        'UPDATE notifications SET is_read = 1 WHERE id = %s', (notification_id,)
+    )
+    mydb.commit()
+
+    flash("Notification marked as read!", category='success')
+    return redirect(url_for('household.notifications'))
+
 
 # Delete household and cascade to remove tasks and members
 @household.route('/household/delete/<int:household_id>', methods=['POST'])
