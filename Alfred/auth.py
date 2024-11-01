@@ -1,4 +1,4 @@
-from flask import Blueprint,render_template,request,flash,url_for,redirect
+from flask import Blueprint,render_template,request,flash,url_for,redirect , session
 from flask_bcrypt import Bcrypt
 import re
 import mysql.connector
@@ -45,17 +45,21 @@ def login():
         account = cursor.fetchone()
         if account:
             if check_password(password, account[2]):
+                session['user_id'] = account[0]  # Store user ID in session
+                session['username'] = account[1]  # Store username in session
                 flash('Logged in successfully!', category='success')
                 return redirect(url_for('views.home'))
             else:
                 flash('Invalid password.', category='error')
         else:
             flash('Username does not exist.', category='error')
-    return render_template('login.html') 
+    return render_template('login.html')
 
 @auth.route('/logout')
 def logout():
-    return "<p>Logout</p>"
+    session.clear()  # Clear the session
+    flash("You have been logged out.", category='success')
+    return redirect(url_for('auth.login'))
 
 @auth.route('/register', methods=['GET', 'POST'])
 def register():

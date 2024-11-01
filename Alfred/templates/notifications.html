@@ -1,12 +1,27 @@
+{% extends "base.html" %} {% block title %}Notifications{% endblock %} {% block
+content %}
 <h2>Notifications</h2>
 <ul>
   {% for notification in notifications %}
   <li>
-    {{ notification[2] }}
-    <!-- Notification message -->
-    {% if not notification[3] %}
-    <span class="badge badge-info">Unread</span>
-    {% endif %}
+    <div>
+      <p>{{ notification[1] }}</p>
+      <!-- Notification message -->
+      <p>Task Description: {{ notification[2] }}</p>
+      <!-- Task description -->
+      <p>Household ID: {{ notification[3] }}</p>
+      <!-- Household ID -->
+      {% if not notification[4] %}
+      <span class="badge badge-info">Unread</span>
+      <form
+        action="{{ url_for('household.mark_notification_read', notification_id=notification[0]) }}"
+        method="post"
+      >
+        <button type="submit">Mark as Read</button>
+      </form>
+      {% endif %}
+    </div>
   </li>
   {% endfor %}
 </ul>
+{% endblock %}
